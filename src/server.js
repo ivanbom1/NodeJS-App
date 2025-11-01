@@ -1,28 +1,21 @@
 import express from "express"
 import { logMiddleware } from "./middleware/middleware.js"
+import { getAllUsers, getUserById, createUser } from "./controllers/authController.js"  // ← Import the controller
+
 const app = express()
 const PORT = 3000
 
-const users = [
-    { id: 1, name: "Alice" },
-    { id: 2, name: "Bob" },
-    { id: 3, name: "Charlie" },
-    { id: 4, name: "Dave" },
-]
-
+// middleware
 app.use(express.json())
-
 app.use(logMiddleware);
 
-app.get("/", logMiddleware, (req, res) => {
-	const data = req.data
-	res.json({ users, data })
-})
+// Route now references the controller function
+app.get("/", logMiddleware, getAllUsers)  // ← Use the controller here
 
-app.post("/", (req, res) => {
-    console.log(req)
-})
+app.get("/users", getAllUsers)
+app.get("/users/:id", getUserById)
+app.post("/users", createUser)
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
+	console.log(`Server is running on http://localhost:${PORT}`)
 })
