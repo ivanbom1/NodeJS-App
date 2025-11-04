@@ -1,6 +1,6 @@
 import express from "express"
 import { logMiddleware } from "./middleware/middleware.js"
-import { getAllUsers, getUserById, createUser } from "./controllers/authController.js"  // ← Import the controller
+import { getAllUsers, getUserById, createUser } from "./controllers/userController.js"  // ← Import the controller
 
 const app = express()
 const PORT = 3000
