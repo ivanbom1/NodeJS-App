@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ivanbom1/NodeJS-App#readme",
   "dependencies": {
+    "better-sqlite3": "^11.10.0",
     "express": "^5.1.0"
   },
   "devDependencies": {

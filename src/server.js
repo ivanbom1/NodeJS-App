@@ -1,17 +1,21 @@
 import express from "express"
 import { logMiddleware } from "./middleware/logger.js"
-import userRoutes from "./routes/userRoutes.js"  // Import the router
+import userRoutes from "./routes/userRoutes.js"
+import { initializeDatabase } from "./config/database.js"  // Import initializer
 
 const app = express()
 const PORT = 3000
 
-// Global middleware (applies to all routes)
+// Initialize database before starting server
+initializeDatabase()
+
+// Global middleware
 app.use(express.json())
 
-// Mount the user router at /users
+// Mount the user router
 app.use('/users', userRoutes)
 
-// Optional: Add a welcome route
+// Welcome route
 app.get('/', (req, res) => {
 	res.json({ 
 		message: "Welcome to the API",
@@ -22,8 +26,9 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-	console.log(`Server is running on http://localhost:${PORT}`)
-	console.log(`API Documentation:`)
+	console.log(`✅ Server is running on http://localhost:${PORT}`)
+	console.log(`📊 Database ready`)
+	console.log(`API Endpoints:`)
 	console.log(`  GET    /users      - Get all users`)
 	console.log(`  GET    /users/:id  - Get user by ID`)
 	console.log(`  POST   /users      - Create new user`)
