@@ -37,8 +37,6 @@ export const initializeDatabase = async () => {
             console.log('✅ User seed complete')
             Recipe.seed()
             console.log('✅ Recipe seed complete')
-        } else {
-            console.log('⏭️ Skipping seeds (not in development)')
         }
         
         console.log('✅ Database initialization complete')
