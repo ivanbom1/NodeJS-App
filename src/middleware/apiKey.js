@@ -16,16 +16,14 @@ export const validateApiKey = (req, res, next) => {
 			message: 'API key is required. Provide it in X-API-Key header or Authorization header.' 
 		})
 	}
-	
-	// Validate API key
+
 	if (apiKey !== config.apiKey) {
 		return res.status(403).json({ 
 			error: 'Forbidden',
 			message: 'Invalid API key' 
 		})
 	}
-	
-	// API key is valid, continue
+
 	next()
 }
 

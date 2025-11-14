@@ -38,7 +38,8 @@ class Recipe {
     static findAll() {
         const stmt = db.prepare(`SELECT * FROM ${this.tableName} ORDER BY id`)
         const recipes = stmt.all()
-
+        
+        // Add ingredients to each recipe
         return recipes.map(recipe => {
             const recipeWithIngredients = {
                 id: recipe.id,
@@ -59,7 +60,12 @@ class Recipe {
         if (!recipe) return null
         
         return {
-            ...recipe,
+            id: recipe.id,
+            name: recipe.name,
+            description: recipe.description,
+            instructions: recipe.instructions,
+            created_at: recipe.created_at,
+            updated_at: recipe.updated_at,
             ingredients: this.getRecipeIngredients(id)
         }
     }
@@ -102,10 +108,6 @@ class Recipe {
         }
 
         updates.push('updated_at = CURRENT_TIMESTAMP')
-
-        if (updates.length === 1 && !ingredients) {
-            return this.findById(id)
-        }
 
         if (updates.length > 1) {
             values.push(id)
