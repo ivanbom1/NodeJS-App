@@ -40,9 +40,6 @@ app.get('/health', (req, res) => {
 app.use('/users', validateApiKey, userRoutes)
 app.use('/recipes', recipeRoutes)
 
-// Option 2: Only protect in production (easier for development)
-// app.use('/users', validateApiKeyProduction, userRoutes)
-// app.use('/recipes', validateApiKeyProduction, recipeRoutes)
 
 // 404 handler
 app.use((req, res) => {
