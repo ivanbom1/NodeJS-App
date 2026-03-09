@@ -2,7 +2,9 @@ name: Renovate Bot
 
 on:
   schedule:
-    - cron: "0 3 * * 1"
+   - cron: "0 3 * * 1"
+
+  # Allow triggering manually the Github UI
   workflow_dispatch:
     inputs:
       log_level:
@@ -15,7 +17,7 @@ on:
           - info
           - warn
       ignore_schedule:
-        description: "Ignore schedule (open PRs immediately)"
+        description: "Ignore schedule (open PRs immediatly)"
         required: false
         default: "true"
         type: choice
@@ -27,6 +29,7 @@ jobs:
   renovate:
     name: Run Renovate
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +39,12 @@ jobs:
         with:
           configurationFile: renovate.json
           token: ${{ secrets.RENOVATE_TOKEN }}
+          # Allow RENOVATE_* and LOG_LEVEL env vars to pass through to the container
+          # Without this regex, only the token is forwarded
           env-regex: "^(RENOVATE_|LOG_LEVEL)"
         env:
           LOG_LEVEL: ${{ github.event.inputs.log_level || 'info' }}
           RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # When triggered manually with ignore_schedule=true, null out the schedule
+          # so PRs open immediatly. On cron runs this is {} (no-op)
           RENOVATE_FORCE: ${{ github.event.inputs.ignore_schedule == 'true' && '{"schedule":null}' || '{}'}}
